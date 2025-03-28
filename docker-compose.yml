@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  octoprint_1:
+    image: octoprint/octoprint
+    container_name: octoprint_1
+    restart: unless-stopped
+    ports:
+      - "5000:5000"   # Web UI de la primera instancia
+      - "8080:8080"   # Stream de la primera cámara
+#    devices:
+#      - "/dev/ttyUSB0:/dev/ttyUSB0"   # Primera impresora
+#      - "/dev/video0:/dev/video0"     # Primera cámara
+    volumes:
+      - "./octoprint_1/config:/octoprint"
+    environment:
+      - ENABLE_MJPG_STREAMER=true
+      - MJPG_STREAMER_INPUT=-y -n -r 640x480
+
+  octoprint_2:
+    image: octoprint/octoprint
+    container_name: octoprint_2
+    restart: unless-stopped
+    ports:
+      - "5001:5000"   # Web UI de la segunda instancia
+      - "8081:8080"   # Stream de la segunda cámara
+#    devices:
+#      - "/dev/ttyUSB1:/dev/ttyUSB1"   # Segunda impresora
+#      - "/dev/video1:/dev/video1"     # Segunda cámara
+    volumes:
+      - "./octoprint_2/config:/octoprint"
+    environment:
+      - ENABLE_MJPG_STREAMER=true
+      - MJPG_STREAMER_INPUT=-y -n -r 640x480
